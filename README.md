@@ -47,10 +47,10 @@ If front page is a node and the redirect module is enabled, make sure to set the
 on Drupal updates run:
 
 ```bash
-drush @alias -y updb
-drush @alias -y entup
-drush @alias locale-update
-drush @alias -v cron
+$ drush @alias -y updb
+$ drush @alias -y entup
+$ drush @alias locale-update
+$ drush @alias -v cron
 ```
 
 ## Acquia
