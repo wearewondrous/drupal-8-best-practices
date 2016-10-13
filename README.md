@@ -40,7 +40,7 @@ Use `.gitconfig` in git root folder to set correct encoding for binary files. e.
 
 If front page is a node and the redirect module is enabled, make sure to set the checkbox „Remove trailing slashes from paths.“ Otherwise you will end up in a „Too many redirects“ error on the front page. 
 
-![redirect setup](/Users/tassilo/Documents/drupal-8-best-practices/screens/redirect-module-config.png)
+![redirect setup](screens/redirect-module-config.png)
 
 ## Drupal Drush
 
