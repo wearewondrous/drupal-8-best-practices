@@ -42,6 +42,18 @@ If front page is a node and the redirect module is enabled, make sure to set the
 
 ![redirect setup](screens/redirect-module-config.png)
 
+### Themes
+
+Put your personalized themes directly under `themes`. Not `profiles`. Not `themes/custom`. This will avoid deep folder nesting. Google crawling problems.
+
+## Drupal Modules
+
+### Rabbit hole
+
+You can remove or disable the Taxonomy view but your taxonomies will still be available via the url `taxonomy/term/{id}`. To prevent this use the Rabbit hole sub module `rh_taxonomy` to prevent this pages from being crawled.
+If the bots have already crawled this pages, decide whether to display a 404-page or redirect to front page.
+
+
 ## Drupal Drush
 
 on Drupal updates run:
@@ -120,3 +132,20 @@ Note: In your `composer.json` add the `robots.txt` to the exclude information.
   ]
 }
 ````
+
+Further readings:
+
+- [Drupal, duplicate content, and you](https://www.lullabot.com/articles/drupal-duplicate-content-and-you)
+- http://blamcast.net/articles/drupal-seo
+
+
+## Themes under `profiles`
+
+If you have (for what reason so ever) have active themes situated under the `profiles`-folder and user assets like fonts, make sure to allow them in the `robots.txt`, too.
+
+```
+Allow: /profiles/*.woff
+Allow: /profiles/*.woff2
+Allow: /profiles/*.eot
+Allow: /profiles/*.ttf
+```
