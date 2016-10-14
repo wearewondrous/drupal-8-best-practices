@@ -57,3 +57,32 @@ $ drush @alias -v cron
 
 - Set *dev* and *stage* environment directly to `master` branch. So only *prod* will use git Tags.
 - use server side cron runs (only on prod) instead of drupal db triggered cron run
+
+## Twig
+
+Fetching the value from a given field
+
+```twig
+{{ content.field_text['#items'].getString }}
+instead of 
+{{ content.field_text[0]['#markup'] }}
+```
+
+cycle through a list of items in a field
+```twig
+{% for item in content.field_text['#items'].getItterator %}
+	{{ item.value }}
+{% endfor %}
+```
+
+
+## Styles
+
+- Use a certain class, like `.rt`, for all content coming from rich text editors. So you style lists like `ul` and `ol` accordingly. Scoping your css.
+
+## SEO 
+
+remove trailing slashes
+http://blamcast.net/articles/drupal-seo
+https://yoast.com/duplicate-content/
+https://www.agiledrop.com/blog/top-21-drupal-seo-modules-optimize-your-website
