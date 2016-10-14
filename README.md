@@ -60,7 +60,7 @@ $ drush @alias -v cron
 
 ## Twig
 
-Fetching the value from a given field
+### Fetching the value from a given field
 
 ```twig
 {{ content.field_text['#items'].getString }}
@@ -75,6 +75,21 @@ cycle through a list of items in a field
 {% endfor %}
 ```
 
+### Linking to referenced entities
+
+You have in a teaser view an entity reference to which you want to link but with a custom anchor tag — instead of using the field template.
+
+Go to manage display. For the referenced field set format to label and „link to the reference“
+
+In the corresponding twig file you can then do:
+
+```twig
+<a href="{{ content.field_reference[0]['#url'] }}" class="button">
+  {{ content.field_reference[0]['#title'] }}
+</a>
+```
+ 
+
 
 ## Styles
 
@@ -82,7 +97,26 @@ cycle through a list of items in a field
 
 ## SEO 
 
+- Make sure to have only one domain you serve. Otherwise redirect with `301` to the main domain.
+
 remove trailing slashes
 http://blamcast.net/articles/drupal-seo
 https://yoast.com/duplicate-content/
 https://www.agiledrop.com/blog/top-21-drupal-seo-modules-optimize-your-website
+
+### Disallow `nodes` folder
+
+In your `robots.txt` make sure you have this line
+
+	Disallow: /node/
+
+Note: In your `composer.json` add the `robots.txt` to the exclude information.
+
+```json
+"drupal-scaffold": {
+  "excludes": [
+    ".htaccess",
+    "robots.txt"
+  ]
+}
+````
