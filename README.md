@@ -110,6 +110,10 @@ In the corresponding twig file you can then do:
 ## SEO 
 
 - Make sure to have only one domain you serve. Otherwise redirect with `301` to the main domain.
+- If your content manager are not bound to modules like pathauto for url generation: URL are preferably lowercase. As separator google favors dashes (`-`) instead of underscores (`_`) or dots (`.`). Definitely avoid using empty spaces (will be converted to `%20`).
+- If style of Headlines are uppercase, make sure to teach the content Manager to NOT provide the Headline in UPPERCASE in the backend.
+- force language folders and redirects. See redirect module and set language prefix for every language.
+
 
 remove trailing slashes
 http://blamcast.net/articles/drupal-seo
