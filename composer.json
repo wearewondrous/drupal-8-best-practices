@@ -1,0 +1,180 @@
+{
+  "name": "drupal-composer/drupal-project",
+  "description": "Project template for Drupal 8 projects with composer",
+  "type": "project",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "",
+      "role": ""
+    }
+  ],
+  "config": {
+    "github-oauth": {
+      "github.com": "8f245d598569b715b4048593af4c32bc65b3ea76"
+    },
+    "prefered-install": "dist",
+    "optimize-autoloader": true,
+    "platform": {
+      "php": "7.0"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packagist.drupal-composer.org"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/WondrousLLC/unset_html_head_link"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/WondrousLLC/rendered_view_field"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/WondrousLLC/stripe_color_field"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "enyo/dropzone",
+        "version": "4.3.0",
+        "type": "drupal-library",
+        "dist": {
+          "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "desandro/imagesloaded",
+        "version": "3.2.0",
+        "type": "drupal-library",
+        "dist": {
+          "url": "https://github.com/desandro/imagesloaded/archive/v3.2.0.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "desandro/masonry",
+        "version": "4.1.0",
+        "type": "drupal-library",
+        "dist": {
+          "url": "https://github.com/desandro/masonry/archive/v4.1.0.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "dimsemenov/photoswipe",
+        "version": "4.1.1",
+        "type": "drupal-library",
+        "dist": {
+          "url": "https://github.com/dimsemenov/PhotoSwipe/archive/v4.1.1.zip",
+          "type": "zip"
+        }
+      }
+    }
+  ],
+  "require": {
+    "composer/installers": "^1.0.20",
+    "cweagans/composer-patches": "~1.0",
+    "desandro/imagesloaded": "^3.2",
+    "desandro/masonry": "4.1.0",
+    "dimsemenov/photoswipe": "^4.1",
+    "drupal-composer/drupal-scaffold": "^2.0.1",
+    "drupal/admin_toolbar": "~1.0",
+    "drupal/console": "~1.0",
+    "drupal/contact_storage": "~1.0",
+    "drupal/core": "~8.0",
+    "drupal/ctools": "~3.0",
+    "drupal/devel": "~1.0",
+    "drupal/editor_advanced_link": "^1.2",
+    "drupal/file_browser": "~1.0",
+    "drupal/file_entity": "~2.0",
+    "drupal/geolocation": "~1.6",
+    "drupal/google_analytics": "^2.1",
+    "drupal/linkit": "^5.0",
+    "drupal/metatag": "1.x-dev",
+    "drupal/paragraphs": "~1.0",
+    "drupal/pathauto": "~1.0",
+    "drupal/rabbit_hole": "1.x-dev",
+    "drupal/redirect": "~1.0",
+    "drupal/simple_sitemap": "~2.0",
+    "drupal/mailsystem": "^4.1",
+    "drupal/swiftmailer": "~1.0",
+    "drupal/yamlform": "1.x-dev",
+    "enyo/dropzone": "^4.3",
+    "WondrousLLC/block_grid_field": "~1.0",
+    "WondrousLLC/contact_form_field": "~1.0",
+    "WondrousLLC/icon_select_field": "~1.0",
+    "WondrousLLC/rendered_view_field": "~2.0",
+    "WondrousLLC/stripe_color_field": "^1.0",
+    "WondrousLLC/unset_html_head_link": "~1.0"
+  },
+  "require-dev": {
+    "behat/mink": "~1.7",
+    "behat/mink-goutte-driver": "~1.2",
+    "jcalderonzumba/gastonjs": "~1.0.2",
+    "jcalderonzumba/mink-phantomjs-driver": "~0.3.1",
+    "mikey179/vfsStream": "~1.2",
+    "phpunit/phpunit": "~4.8",
+    "symfony/css-selector": "~2.8"
+  },
+  "conflict": {
+    "drupal/drupal": "*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": false,
+  "autoload": {
+    "classmap": [
+      "scripts/composer/ScriptHandler.php"
+    ]
+  },
+  "scripts": {
+    "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
+    "pre-install-cmd": [
+      "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+    ],
+    "pre-update-cmd": [
+      "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+    ],
+    "post-install-cmd": [
+      "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+    ],
+    "post-update-cmd": [
+      "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+    ]
+  },
+  "extra": {
+    "installer-paths": {
+      "web/core": [
+        "type:drupal-core"
+      ],
+      "web/libraries/{$name}": [
+        "type:drupal-library"
+      ],
+      "web/modules/contrib/{$name}": [
+        "type:drupal-module"
+      ],
+      "web/profiles/contrib/{$name}": [
+        "type:drupal-profile"
+      ],
+      "web/themes/contrib/{$name}": [
+        "type:drupal-theme"
+      ],
+      "drush/contrib/{$name}": [
+        "type:drupal-drush"
+      ]
+    }
+  }
+}
