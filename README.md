@@ -75,7 +75,28 @@ If the bots have already crawled this pages, decide whether to display a 404-pag
 
 ![Entity Browser Author access check](screens/entity-browser-module-access.png)
 
+### Simple Sitemap
+
+Using `simple_sitemap` and running a cron job from the command line may create a problem, if your cron job does not run on the very same server. Then you end up with a wrong url in the `sitemap.xml`.
+
+To prevent this create a `docroot/sites/default/drushrc.php` with the following content:
+
+```php
+<?php
+$options['uri'] = "https://www.mydomain.com/";
+```
+
+Alternately , you can run every remote `drush cron` like this:
+
+```bash
+$ drush @alias -l https://www.mydomain.com/ cron
+```
+
 ## Drupal Drush
+
+
+
+### Updates
 
 Since we commit everything to the repository, we have the following process. After `$ composer update` and pushing everything to the servers run:
 
@@ -163,9 +184,29 @@ Then in the corresponding twig file you can do:
  
 No preprocessing needed.
 
+
+### Special variables
+
+`{{ directory }}`
+
 ## Styles
 
 - Use a certain class, like `.rt`, for all content coming from rich text editors. So you can style lists (`ul` and `ol`) coming from rich text editors accordingly. Meaning: Scoping your css.
+
+
+## Scripts
+
+Place your `node_modules` in the repository root folder. So your `grunt` and `gulp` etc. files as well.
+
+For `grunt` pointing to an other folder use:
+
+```js
+grunt.file.setBase('docroot/themes/my_theme');
+```
+
+Drupal behaviors
+
+
 
 ## SEO 
 
