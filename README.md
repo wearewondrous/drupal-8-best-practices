@@ -71,6 +71,10 @@ If you use translations on a multilingual site, make sure to grant access to the
 If the bots have already crawled this pages, decide whether to display a 404-page or redirect to front page. It may be helpful to have these extra pages pointing to your front page or other page.
 
 
+### Entity browser
+
+![Entity Browser Author access check](screens/entity-browser-module-access.png)
+
 ## Drupal Drush
 
 Since we commit everything to the repository, we have the following process. After `$ composer update` and pushing everything to the servers run:
