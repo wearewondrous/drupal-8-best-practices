@@ -204,8 +204,24 @@ For `grunt` pointing to an other folder use:
 grunt.file.setBase('docroot/themes/my_theme');
 ```
 
+For `gulp` add this to the top:
+
+```js
+process.chdir(yourDir);
+var gulp = require('gulp');
+```
+
 Drupal behaviors
 
+## Fonts
+
+Include fonts into your own theme. Don’t use the CDN because the caching may be hurting your page speed. Thus Include the `style` definitions directly as a block in the head
+
+and before the closing `</body>`
+
+```html
+<link rel="stylesheet" href="//fast.fonts.net/t/1.css?apiType=css&projectid=123456" media="all">
+```
 
 
 ## SEO 
