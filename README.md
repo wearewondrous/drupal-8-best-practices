@@ -184,6 +184,15 @@ Then in the corresponding twig file you can do:
  
 No preprocessing needed.
 
+### HTML validation bug in `links.html.twig`
+
+Used for menus and language switches the `links.html.twig` will contain by default a `hreflang` attribute not only on the anchor tag, but also on the parent `li` element. This will cause a html validation error. To avoid this, copy from stable the `/navigation/links.html.twig` and replace line 44 with:
+
+```twig
+<li{{ item.attributes.removeAttribute('hreflang') }}>
+```
+
+For more functions on the attributes see [Using attributes in templates](https://www.drupal.org/docs/8/theming-drupal-8/using-attributes-in-templates)
 
 ### Special variables
 
@@ -193,6 +202,11 @@ No preprocessing needed.
 
 - Use a certain class, like `.rt`, for all content coming from rich text editors. So you can style lists (`ul` and `ol`) coming from rich text editors accordingly. Meaning: Scoping your css.
 
+### Using sprites via the `meta`-tag
+
+If you use the `meta`-tag in the header to create JS sprites via css, add at least the attribute `name` and `content` to it. This will reduce html validation errors.
+
+This technique comes from the foundation css to js media query value transport.
 
 ## Scripts
 
@@ -230,6 +244,10 @@ and before the closing `</body>`
 - If your content manager are not bound to modules like `pathauto` for url generation: URLs should be preferably in lowercase. As a separator Google favors dashes (`-`) instead of underscores (`_`) or dots (`.`). Definitely avoid using empty spaces (will be converted to `%20`).
 - If the style of your headlines are uppercase, make sure to teach the content Manager to NOT provide the Headline in UPPERCASE in the backend. Eventually, your content will be scraped and presented in other places (e.g. social media) without your own styling. Then the correct typography is important.
 - Force language folders and redirect to them. Remove trailing slashes. See `redirect` module and set language prefix for every language (e.g. `www.mydomain.com/en`). Trailing slashes may produce duplicate content warnings.
+- set hidden menu headline to max `h3`. Give them meaningful name. They will be displayed in search results.
+- 
+
+
 
 ### Disallow `nodes` folder
 
