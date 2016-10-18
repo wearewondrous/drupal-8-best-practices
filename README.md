@@ -2,14 +2,16 @@
 
 This is a compendium of knowledge we gathered during our trail and errors running Drupal 8 web pages.
 
-We try to address sitebuilder, as well as Developer. Our findings touch SEO topics as well as performance and ease of development. Always refer to the modules current readme files first, because information on this page may be dated.
+We try to address site builder and Developer. Our findings touch SEO topics, performance and ease of development. Always refer to the modules current readme files first, because information on this page may be dated.
 
 
 ## Basic assumptions
 
-As a setup: Drupal 8 with local development (mamp, e.g. DevDesktop), remote development, (remote stage/test) and a productive environment. Composer (e.g. [Drupal composer](https://github.com/drupal-composer/drupal-project)).
+As a basic setup: Drupal 8 with local development (mamp, e.g. DevDesktop), remote development, (remote stage/test) and a productive environment. Drupal with Composer setup (e.g. [Drupal composer](https://github.com/drupal-composer/drupal-project)).
 
-Currently we commit all our vendors and compiled filed (sass, assets, js) to the repository. A better setup would be to push only setup and sources. Then on the server download and compile everything. Finally rsync everything to the environment, if the build was successful.
+Currently, we commit all our vendors and compiled filed (sass, assets, js) to the repository.
+
+A better setup would be to push only setup and sources, available e.g. with the [Acquia Pipelines](https://docs.acquia.com/pipelines). On the server you download and compile everything. Finally rsync to the environment, if the build was successful.
 
 ### Naming things
 
@@ -33,6 +35,8 @@ Have a look in the [`composer.json`](composer.json) in this very repository.
 
 ## Git config
 
+We always had the problem of `woff2` files being encoded not correctly. So the Browser would throw a OTS parsing error in the dev tools. [Described like here](http://stackoverflow.com/questions/34288778/failed-to-decode-downloaded-font-ots-parsing-error-invalid-version-tag-rails)
+
 Use the `.gitconfig` in git root folder to set correct encoding for binary files. e.g. fonts
 
 ```
@@ -40,7 +44,6 @@ Use the `.gitconfig` in git root folder to set correct encoding for binary files
 *.woff binary
 ```
 
-We always had the problem of `woff2` files being encoded not correctly. So the Browser would throw warnings in the dev tools.
 
 ## Drupal Config
 
@@ -50,28 +53,36 @@ If front page is a node and the `redirect` module is enabled, make sure to set t
 
 ![redirect setup](screens/redirect-module-config.png)
 
+Note: this is an older version of the module. Currently it does provide this option by default.
+
 ### Themes
 
 Put your personalized themes directly under `themes`. Not `profiles`. Not `themes/custom`. This will avoid deep folder nesting and prevent Google crawling problems.
 
-Have a thorough look at the `robots.txt` file in your project. To crawl your site, google needs to access all important folders and file types.
+Have a thorough look at the `robots.txt`-file in your project. To crawl your site, google needs to access all important folders and file types.
+
+Think of it like this: Google crawls your page with all CSS an JS. It tries to render the page as nearly as possible as a human user will see it. Thus, even missing fonts will harm your page.
+
 
 ## Drupal Modules
 
 ### Rabbit hole
 
-*Nodes*: Not every node type will have a dedicated full page view. Thus, use the module `rh_node` to prevent search engines and anonymous visitors of your site, to access those pages. As admin you can still browse this pages.
+*Nodes*: Not every node type will have a dedicated full page view. E.g. a contact person or locations, etc. Thus, use the module `rh_node` to prevent search engines and anonymous visitors of your site, to access those pages. As admin you can still browse this pages.
 
-If you use translations on a multilingual site, make sure to grant access to the authors of your content. Otherwise, they will have a hard time accessing the translations overview page of a given node.
+*Notice*: If you use translations on a multilingual site, make sure to grant access to the authors of your content. Otherwise, they will have a hard time accessing the translations overview page of a given node.
 
 ![Rabbit Hole Author access check](screens/rabbit-hole-module-author-access.png)
 
 *Taxonomy*: You can remove or disable the Taxonomy view, but your taxonomies will still be available via the url `taxonomy/term/{id}`. To prevent this use the Rabbit hole sub module `rh_taxonomy` to prevent this pages from being crawled.
 
-If the bots have already crawled this pages, decide whether to display a 404-page or redirect to front page. It may be helpful to have these extra pages pointing to your front page or other page.
+By using this method, you are able to allow certain taxonomies and disallow others. 
 
+If the bots have already crawled this pages, decide whether to display a 404-page or redirect to front page. It may be helpful to have these extra pages pointing to your front page or even other pages.
 
 ### Entity browser
+
+After enabling the module `entity_browser` make sure to give access to your content authors. You tend to forget about that and end up with clients calling you and complaining…
 
 ![Entity Browser Author access check](screens/entity-browser-module-access.png)
 
@@ -79,7 +90,7 @@ If the bots have already crawled this pages, decide whether to display a 404-pag
 
 Using `simple_sitemap` and running a cron job from the command line may create a problem, if your cron job does not run on the very same server. Then you end up with a wrong url in the `sitemap.xml`.
 
-To prevent this create a `docroot/sites/default/drushrc.php` with the following content:
+To prevent this, create a `docroot/sites/default/drushrc.php` with the following content:
 
 ```php
 <?php
@@ -91,6 +102,21 @@ Alternately , you can run every remote `drush cron` like this:
 ```bash
 $ drush @alias -l https://www.mydomain.com/ cron
 ```
+
+You may decide, what is your preferred choice.
+
+### Pathauto
+
+*Notice:* A SEO best practice recommends to limit your path length to 70 Chars. 
+
+Definitely use it! But be concise on how to generate your aliases. Allow your content authors and yourself to alway be clear on how the url path will be generated.
+
+E.g. always generate the path for a normal page from its position in the menu plus its Title in the menu. Do not use the very title of the node, but the translatable menu title.
+
+From there, you can be sure to always have a lowercase, dash separated and reduced to ASCII character url. so on the Settings page check „Transliterate prior to creating alias“ and „Reduce strings to letters and numbers“
+
+![Pathauto settings](screens/pathauto-module-settings.png)
+
 
 ## Drupal Drush
 
