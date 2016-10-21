@@ -26,6 +26,14 @@
     },
     {
       "type": "vcs",
+      "url": "https://github.com/WondrousLLC/block_grid_field"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/WondrousLLC/icon_select_field"
+    },
+    {
+      "type": "vcs",
       "url": "https://github.com/WondrousLLC/rendered_view_field"
     },
     {
