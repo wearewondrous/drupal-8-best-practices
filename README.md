@@ -133,6 +133,8 @@ From there, you can be sure to always have a lowercase, dash separated and reduc
 
 Using the `google-analytics`-module gives you the ability to cache the `analytics.js`-file on your own servers. This does not harm your google page speed, instead it makes it better. Why? The caching time of the CDN file will harm your insight score.
 
+![Leverage browser caching](screens/leverage-browser-caching.png)
+
 If you use the browser plugin `Tag Assistant` you will be confronted with a false positive. Everything works fine.
 
 ![Tag Assistant false positive](screens/tag-assistant-false-positive.png)
