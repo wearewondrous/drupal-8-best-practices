@@ -22,11 +22,15 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "https://packagist.drupal-composer.org"
+      "url": "https://packages.drupal.org/8"
     },
     {
       "type": "vcs",
-      "url": "https://github.com/WondrousLLC/unset_html_head_link"
+      "url": "https://github.com/WondrousLLC/block_grid_field"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/WondrousLLC/icon_select_field"
     },
     {
       "type": "vcs",
@@ -94,9 +98,7 @@
     "drupal-composer/drupal-scaffold": "^2.0.1",
     "drupal/admin_toolbar": "~1.0",
     "drupal/console": "~1.0",
-    "drupal/contact_storage": "~1.0",
     "drupal/core": "~8.0",
-    "drupal/ctools": "~3.0",
     "drupal/devel": "~1.0",
     "drupal/editor_advanced_link": "^1.2",
     "drupal/file_browser": "~1.0",
@@ -115,11 +117,9 @@
     "drupal/yamlform": "1.x-dev",
     "enyo/dropzone": "^4.3",
     "WondrousLLC/block_grid_field": "~1.0",
-    "WondrousLLC/contact_form_field": "~1.0",
     "WondrousLLC/icon_select_field": "~1.0",
     "WondrousLLC/rendered_view_field": "~2.0",
-    "WondrousLLC/stripe_color_field": "^1.0",
-    "WondrousLLC/unset_html_head_link": "~1.0"
+    "WondrousLLC/stripe_color_field": "^1.0"
   },
   "require-dev": {
     "behat/mink": "~1.7",
