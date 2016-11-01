@@ -15,7 +15,7 @@ A better setup would be to push only setup and sources, available e.g. with the 
 
 ### Naming things
 
-It is a no brainer, but may it be said anyway: always name everything in one language. All your node types, all your fields, every configuration, every form key needs to be in one language (preferably english). From this you start using translations.
+This is a no brainer, but may it be said anyway: *always name everything in one language*. All your node types, all your fields, every configuration, every form key needs to be in one language (preferably english). From this you start using translations.
 
 Even if there are no other languages - stick to it. Thinking about what a field may correctly be called in an other language makes you reflect on the actual usage.
 
@@ -30,30 +30,33 @@ Have a look in the [`composer.json`](composer.json) in this very repository.
 ## PHP Storm
 
 - Install module `editorconfig` to use the Drupal own indentation.
-- Install `.ignore` plugin to add default git ignore templates for OSX, drupal, node and idea files.
+- Install `.ignore` plugin to add default git ignore templates for OSX, Drupal, node and idea files.
 - Set folders `sites/default/files` to „Mark directory as…“ > „excluded“. So the folder inspection won’t take that long after a file remote sync.
 
 ## Git config
 
-We always had the problem of `woff2` files being encoded not correctly. So the Browser would throw a OTS parsing error in the dev tools. [Described like here](http://stackoverflow.com/questions/34288778/failed-to-decode-downloaded-font-ots-parsing-error-invalid-version-tag-rails)
+We always had the problem of `woff2` files being encoded not correctly. So the Browser would throw a OTS parsing error in the dev tools. [Described on stackoverflow](http://stackoverflow.com/questions/34288778/failed-to-decode-downloaded-font-ots-parsing-error-invalid-version-tag-rails)
 
-Use the `.gitconfig` in git root folder to set correct encoding for binary files. e.g. fonts
+Use the `.gitconfig` in git root folder — or rather the `.gitattributes` in the `/docroot` — to set correct encoding for binary files. e.g. fonts
 
 ```
 *.woff2 binary
 *.woff binary
 ```
 
+Note: If you edit the `.gitattributes` in the `/docroot`, pay attention to your composer updates, which may override the file.
+
 
 ## Drupal Config
 
-### Front page and redirect module
+### Front page set to `/`
 
-If front page is a node and the `redirect` module is enabled, make sure to set the checkbox „Remove trailing slashes from paths.“ Otherwise you will end up in a „Too many redirects“ error on the front page. 
+In order to have a clean front page path, set the front page not only in the backend under `/admin/config/system/site-information` but also as a path alias. Otherwise you will find in the `<head>` the node id. This will also be presented on the google hits.
 
-![redirect setup](screens/redirect-module-config.png)
+See the screenshot with a wrong path alias set:
 
-Note: this is an older version of the module. Currently it does provide this option by default.
+![bad header setting](screens/too-much-header-information.png)
+
 
 ### Themes
 
@@ -76,7 +79,7 @@ Think of it like this: Google crawls your page with all CSS an JS. It tries to r
 
 *Taxonomy*: You can remove or disable the Taxonomy view, but your taxonomies will still be available via the url `taxonomy/term/{id}`. To prevent this use the Rabbit hole sub module `rh_taxonomy` to prevent this pages from being crawled.
 
-By using this method, you are able to allow certain taxonomies and disallow others. 
+By using this method, you are able to allow certain taxonomies and disallow others.
 
 If the bots have already crawled this pages, decide whether to display a 404-page or redirect to front page. It may be helpful to have these extra pages pointing to your front page or even other pages.
 
@@ -113,14 +116,37 @@ Definitely use it! But be concise on how to generate your aliases. Allow your co
 
 E.g. always generate the path for a normal page from its position in the menu plus its Title in the menu. Do not use the very title of the node, but the translatable menu title.
 
+As predefined patterns use something like this, e.g.:
+
+-	News `/news/[node:created:html_date]/[node:title]`
+-	Page `	/[node:menu-link:parents:join-path]/[node:menu-link:title]`
+
 From there, you can be sure to always have a lowercase, dash separated and reduced to ASCII character url. so on the Settings page check „Transliterate prior to creating alias“ and „Reduce strings to letters and numbers“
 
 ![Pathauto settings](screens/pathauto-module-settings.png)
 
+### Google Analytics
+
+Using the `google-analytics`-module gives you the ability to cache the `ga.js`-file on your own servers. This does not harm your google page speed, instead it makes it better. Why? The caching time of the CDN file will harm your insight score.
+
+If you use the browser plugin `Tag Assistant` you will be confronted with a false positive. Everything works fine.
+
+![Tag Assistant false positive](screens/tag-assistant-false-positive.png)
+
+### Kint
+
+Using twig, think about not only clicking on the very right to open in a new tab. There is also a difference when clicking at the very left plus icon vs. the „label“. The first will open the nested tree all the way. The click on the label will only open the first level.
+
+### Front page and `redirect`-module
+
+Note: this is an older version of the module. Currently it does provide this option by default.
+
+If front page is a node and the `redirect` module is enabled, make sure to set the checkbox „Remove trailing slashes from paths.“ Otherwise you will end up in a „Too many redirects“ error on the front page. 
+
+![redirect setup](screens/redirect-module-config.png)
+
 
 ## Drupal Drush
-
-
 
 ### Updates
 
@@ -169,6 +195,7 @@ Then clean up your local git repository:
 $ git tag -l | grep ^2015 | xargs git tag -d
 ```
 
+
 ## Twig
 
 ### Fetching the value from a given field
@@ -212,6 +239,8 @@ No preprocessing needed.
 
 ### HTML validation bug in `links.html.twig`
 
+![Menu li hreflang validation error](screens/li-hreflang-attribute.png)
+
 Used for menus and language switches the `links.html.twig` will contain by default a `hreflang` attribute not only on the anchor tag, but also on the parent `li` element. This will cause a html validation error. To avoid this, copy from stable the `/navigation/links.html.twig` and replace line 44 with:
 
 ```twig
@@ -220,19 +249,32 @@ Used for menus and language switches the `links.html.twig` will contain by defau
 
 For more functions on the attributes see [Using attributes in templates](https://www.drupal.org/docs/8/theming-drupal-8/using-attributes-in-templates)
 
-### Special variables
+### Special variables and functions
 
-`{{ directory }}`
+To get the current path of the theme use `directory` (equals e.g. `/themes/mytheme`) instead of the `@themealias` (equals e.g. `/themes/mytheme/templates`).
+
+To get the current theme use the active `active_theme()` function. E.g.
+
+	{{ attach_library(active_theme() ~ '/code_snippet') }}
+
+[With this change record #2616756: Allow instantiating Attribute objects within Twig](https://www.drupal.org/node/2818293) you are able to create your own `attributes` variable on the fly. 
+
+You can inline SVG files directly in twig, e.g.
+
+	{% include directory ~ '/svg/' ~ item.content['#markup'] ~ '.svg' %}
+
 
 ## Styles
 
 - Use a certain class, like `.rt`, for all content coming from rich text editors. So you can style lists (`ul` and `ol`) coming from rich text editors accordingly. Meaning: Scoping your css.
+- Prefix Javascript related classes with `js-`. There will by no styling applied to those classes. This will help, to later identify which events are bound to DOM elements.
 
 ### Using sprites via the `meta`-tag
 
 If you use the `meta`-tag in the header to create JS sprites via css, add at least the attribute `name` and `content` to it. This will reduce html validation errors.
 
 This technique comes from the foundation css to js media query value transport.
+
 
 ## Scripts
 
@@ -251,11 +293,17 @@ process.chdir(yourDir);
 var gulp = require('gulp');
 ```
 
-Drupal behaviors
+### Drupal behaviors
+
+Drupal behaviors will come in handy when working with the `big-pipe`-module or the `refreshes`-module.
+
+- [Understanding JavaScript behaviors in Drupal](https://www.lullabot.com/articles/understanding-javascript-behaviors-in-drupal)
+- [Drupal behaviors: A quick how to](https://www.amazeelabs.com/en/blog/drupal-behaviors-quick-how)
+
 
 ## Fonts
 
-Include fonts into your own theme. Don’t use the CDN because the caching may be hurting your page speed. Thus Include the `style` definitions directly as a block in the head
+Include fonts into your own theme. Don’t use the CDN because the caching (normally set only to hours) may be hurting your page speed. Include the `style` definitions directly as a block in the head.
 
 and before the closing `</body>`
 
@@ -271,8 +319,6 @@ and before the closing `</body>`
 - If the style of your headlines are uppercase, make sure to teach the content Manager to NOT provide the Headline in UPPERCASE in the backend. Eventually, your content will be scraped and presented in other places (e.g. social media) without your own styling. Then the correct typography is important.
 - Force language folders and redirect to them. Remove trailing slashes. See `redirect` module and set language prefix for every language (e.g. `www.mydomain.com/en`). Trailing slashes may produce duplicate content warnings.
 - set hidden menu headline to max `h3`. Give them meaningful name. They will be displayed in search results.
-- 
-
 
 
 ### Disallow `nodes` folder
@@ -296,6 +342,10 @@ Further readings:
 
 - [Drupal, duplicate content, and you](https://www.lullabot.com/articles/drupal-duplicate-content-and-you)
 - http://blamcast.net/articles/drupal-seo
+
+Notice: After some time you will find the Google search console complaining about crawling errors. those are false positives:
+
+![Google Search Console url errors](screens/google-search-console-url-errors.png)
 
 
 ## Themes under `profiles`
