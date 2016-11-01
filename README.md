@@ -247,6 +247,8 @@ Used for menus and language switches the `links.html.twig` will contain by defau
 <li{{ item.attributes.removeAttribute('hreflang') }}>
 ```
 
+See the bug report [#2454289: Attribute hreflang not allowed on element li at this point](https://www.drupal.org/node/2454289)
+
 For more functions on the attributes see [Using attributes in templates](https://www.drupal.org/docs/8/theming-drupal-8/using-attributes-in-templates)
 
 ### Special variables and functions
