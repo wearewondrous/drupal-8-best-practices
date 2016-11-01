@@ -319,8 +319,11 @@ and before the closing `</body>`
 - Make sure to have only one domain you serve. Otherwise redirect with `301` to the main domain.
 - If your content manager are not bound to modules like `pathauto` for url generation: URLs should be preferably in lowercase. As a separator Google favors dashes (`-`) instead of underscores (`_`) or dots (`.`). Definitely avoid using empty spaces (will be converted to `%20`).
 - If the style of your headlines are uppercase, make sure to teach the content Manager to NOT provide the Headline in UPPERCASE in the backend. Eventually, your content will be scraped and presented in other places (e.g. social media) without your own styling. Then the correct typography is important.
-- Force language folders and redirect to them. Remove trailing slashes. See `redirect` module and set language prefix for every language (e.g. `www.mydomain.com/en`). Trailing slashes may produce duplicate content warnings.
 - set hidden menu headline to max `h3`. Give them meaningful name. They will be displayed in search results.
+- Force language folders and redirect to them. Remove trailing slashes. See `redirect`-module and force redirect to canonical urls and language prefix for every language (e.g. `www.mydomain.com/en`). Trailing slashes may produce duplicate content warnings.
+
+![Set language prefix folders](screens/set-language-prefix.png)
+
 
 
 ### Disallow `nodes` folder
