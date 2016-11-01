@@ -93,7 +93,7 @@ After enabling the module `entity_browser` make sure to give access to your cont
 
 Check the two options „Exclude duplicate links“ and „Skip non-existent translations“.
 
-![Simple Sitemap Settings](screens/entity-browser-module-access.png)
+![Simple Sitemap Settings](screens/module-simple-sitemap-settings.png)
 
 Using `simple_sitemap` and running a cron job from the command line may create a problem, if your cron job does not run on the very same server. Then you end up with a wrong url in the `sitemap.xml`.
 
