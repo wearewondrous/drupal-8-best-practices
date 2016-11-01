@@ -91,6 +91,10 @@ After enabling the module `entity_browser` make sure to give access to your cont
 
 ### Simple Sitemap
 
+Check the two options „Exclude duplicate links“ and „Skip non-existent translations“.
+
+![Simple Sitemap Settings](screens/entity-browser-module-access.png)
+
 Using `simple_sitemap` and running a cron job from the command line may create a problem, if your cron job does not run on the very same server. Then you end up with a wrong url in the `sitemap.xml`.
 
 To prevent this, create a `docroot/sites/default/drushrc.php` with the following content:
@@ -127,11 +131,24 @@ From there, you can be sure to always have a lowercase, dash separated and reduc
 
 ### Google Analytics
 
-Using the `google-analytics`-module gives you the ability to cache the `ga.js`-file on your own servers. This does not harm your google page speed, instead it makes it better. Why? The caching time of the CDN file will harm your insight score.
+Using the `google-analytics`-module gives you the ability to cache the `analytics.js`-file on your own servers. This does not harm your google page speed, instead it makes it better. Why? The caching time of the CDN file will harm your insight score.
 
 If you use the browser plugin `Tag Assistant` you will be confronted with a false positive. Everything works fine.
 
 ![Tag Assistant false positive](screens/tag-assistant-false-positive.png)
+
+In the `.htaccess`-file add cache header like this:
+
+```
+<IfModule mod_headers.c>
+  Header set Connection keep-alive
+  Header set Cache-Control "max-age=1209600, must-revalidate"
+
+    <filesMatch "\.(html|htm)$">
+        Header set Cache-Control "max-age=7200, must-revalidate"
+    </filesMatch>
+</IfModule>
+```
 
 ### Kint
 
@@ -323,6 +340,7 @@ and before the closing `</body>`
 - Force language folders and redirect to them. Remove trailing slashes. See `redirect`-module and force redirect to canonical urls and language prefix for every language (e.g. `www.mydomain.com/en`). Trailing slashes may produce duplicate content warnings.
 
 ![Set language prefix folders](screens/set-language-prefix.png)
+
 
 
 
