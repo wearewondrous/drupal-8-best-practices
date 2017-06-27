@@ -1,25 +1,35 @@
 # [WONDROUS](https://www.wearewondrous.com) Drupal 8 Best Practice 2016
 
+# Disclaimer: Links and concepts may be outdated
+
+*Last update: June 2017*
+
 This is a compendium of knowledge we gathered during our trail and errors running Drupal 8 web pages.
 
-We try to address site builder and Developer. Our findings touch SEO topics, performance and ease of development. Always refer to the modules current readme files first, because information on this page may be dated.
+We try to address site builder and Developer. Our findings touch
 
+- SEO topics,
+- performance and
+- ease of development
+
+Always refer to the modules current readme files first, because information on this page may be dated.
 
 ## Basic assumptions
 
 As a basic setup: Drupal 8 with local development (mamp, e.g. DevDesktop), remote development, (remote stage/test) and a productive environment. Drupal with Composer setup (e.g. [Drupal composer](https://github.com/drupal-composer/drupal-project)).
 
-Currently, we commit all our vendors and compiled filed (sass, assets, js) to the repository.
+At the time of writing, we commit all our vendors and compiled filed (sass, assets, js) to the repository.
 
-A better setup would be to push only setup and sources, available e.g. with the [Acquia Pipelines](https://docs.acquia.com/pipelines). On the server you download and compile everything. Finally rsync to the environment, if the build was successful.
+A better setup would be to push only setup and sources, available e.g. with [Platform.sh](https://platform.sh/) or [amazee.io](https://amazee.io). On the server you download and compile everything. Finally rsync to the environment, if the build was successful.
+
 
 ### Naming things
 
-This is a no brainer, but may it be said anyway: *always name everything in one language*. All your node types, all your fields, every configuration, every form key needs to be in one language (preferably english). From this you start using translations.
+This is a no brainer, but may it be said anyway: *always name everything in one language*. All your node types, all your fields, every configuration, every form key needs to be in one language (preferably english). From this, you start using translations.
 
 Even if there are no other languages - stick to it. Thinking about what a field may correctly be called in an other language makes you reflect on the actual usage.
 
-Name field in singular and plural. Give a good clue on what the theme layer can expect from a given variable.
+Name fields in singular and plural. Give a good clue on what the theme layer can expect from a given variable.
 
 
 ## Default `composer.json`
@@ -37,14 +47,14 @@ Have a look in the [`composer.json`](composer.json) in this very repository.
 
 We always had the problem of `woff2` files being encoded not correctly. So the Browser would throw a OTS parsing error in the dev tools. [Described on stackoverflow](http://stackoverflow.com/questions/34288778/failed-to-decode-downloaded-font-ots-parsing-error-invalid-version-tag-rails)
 
-Use the `.gitconfig` in git root folder — or rather the `.gitattributes` in the `/docroot` — to set correct encoding for binary files. e.g. fonts
+Use the `.gitconfig` in git root folder — or rather the `.gitattributes` in the `/docroot` (`/web`) — to set correct encoding for binary files. e.g. fonts
 
 ```
 *.woff2 binary
 *.woff binary
 ```
 
-Note: If you edit the `.gitattributes` in the `/docroot`, pay attention to your composer updates, which may override the file.
+Note: If you edit the `.gitattributes` in the `/docroot` (`/web`), pay attention to your composer updates, which may override the file. See the [Disallow Nodes Folder](#disallow-nodes-folder) section on hwo to do it.
 
 
 ## Drupal Config
@@ -60,7 +70,7 @@ See the screenshot with a wrong path alias set:
 
 ### Themes
 
-Put your personalized themes directly under `themes`. Not `profiles`. Not `themes/custom`. This will avoid deep folder nesting and prevent Google crawling problems.
+Put your personalized themes directly under `themes/custom`. Not `profiles`. This will avoid deep folder nesting and prevent Google crawling problems.
 
 Have a thorough look at the `robots.txt`-file in your project. To crawl your site, google needs to access all important folders and file types.
 
@@ -85,15 +95,17 @@ If the bots have already crawled this pages, decide whether to display a 404-pag
 
 ### Entity browser
 
-After enabling the module `entity_browser` make sure to give access to your content authors. You tend to forget about that and end up with clients calling you and complaining…
+After enabling the module `entity_browser` make sure to give access to your content authors. We (logged in as Admin) tend to forget about that and end up with clients calling you and complaining…
 
 ![Entity Browser Author access check](screens/entity-browser-module-access.png)
 
-### Simple Sitemap
+### Simple XML Sitemap
 
 Check the two options „Exclude duplicate links“ and „Skip non-existent translations“.
 
-![Simple Sitemap Settings](screens/module-simple-sitemap-settings.png)
+![Simple XML Sitemap Settings](screens/module-simple-sitemap-settings.png)
+
+**Outdated**: Since the Module now provides a extra field for the "Default base URL" in the settings.
 
 Using `simple_sitemap` and running a cron job from the command line may create a problem, if your cron job does not run on the very same server. Then you end up with a wrong url in the `sitemap.xml`.
 
@@ -112,6 +124,7 @@ $ drush @alias -l https://www.mydomain.com/ cron
 
 You may decide, what is your preferred choice.
 
+
 ### Pathauto
 
 *Notice:* A SEO best practice recommends to limit your path length to 70 Chars. 
@@ -123,7 +136,7 @@ E.g. always generate the path for a normal page from its position in the menu pl
 As predefined patterns use something like this, e.g.:
 
 -	News `/news/[node:created:html_date]/[node:title]`
--	Page `	/[node:menu-link:parents:join-path]/[node:menu-link:title]`
+-	Page `/[node:menu-link:parents:join-path]/[node:menu-link:title]`
 
 From there, you can be sure to always have a lowercase, dash separated and reduced to ASCII character url. so on the Settings page check „Transliterate prior to creating alias“ and „Reduce strings to letters and numbers“
 
@@ -154,7 +167,7 @@ In the `.htaccess`-file add cache header like this:
 
 ### Kint
 
-Using twig, think about not only clicking on the very right to open in a new tab. There is also a difference when clicking at the very left plus icon vs. the „label“. The first will open the nested tree all the way. The click on the label will only open the first level.
+Using twig, think about not only clicking on the very right to open in a new tab. There is also a difference, when clicking at the very left plus icon vs. the „label“. The first will open the nested tree all the way. The click on the label will only open the first level.
 
 ### Front page and `redirect`-module
 
