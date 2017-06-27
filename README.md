@@ -171,7 +171,7 @@ Using twig, think about not only clicking on the very right to open in a new tab
 
 ### Front page and `redirect`-module
 
-Note: this is an older version of the module. Currently it does provide this option by default.
+** Note Outdated **: this is an older version of the module. Currently it does provide this option by default.
 
 If front page is a node and the `redirect` module is enabled, make sure to set the checkbox „Remove trailing slashes from paths.“ Otherwise you will end up in a „Too many redirects“ error on the front page. 
 
@@ -182,7 +182,7 @@ If front page is a node and the `redirect` module is enabled, make sure to set t
 
 ### Updates
 
-Since we commit everything to the repository, we have the following process. After `$ composer update` and pushing everything to the servers run:
+When we commit everything to the repository, we have the following process. After `$ composer update` and pushing everything to the servers run:
 
 ```bash
 $ drush @alias -y updb
@@ -250,6 +250,23 @@ If you need to cycle through a list of items in a field, use the `getItterator` 
 ```twig
 {% for item in content.field_text['#items'].getItterator %}
 	{{ item.value }}
+{% endfor %}
+```
+
+Alternatively you could do this to takle caching and get a itteratable array of your render arrays:
+
+```
+{# just trigger the caching once. Do not omit this! #}
+{% set catch_cache = content.field_references|render %}
+
+{% set contentList = {} %}
+
+{% for key, value in content.field_references %}
+  {% if key starts  with '#' %}
+    {# leave blank #}
+  {% else %}
+    {% set contentList = contentList|merge({(key): value}) %}
+  {% endif %}
 {% endfor %}
 ```
 
