@@ -286,6 +286,16 @@ Then in the corresponding twig file you can do:
  
 No preprocessing needed.
 
+### Working with Media fields
+
+Example: Set a referenced image as a background.
+
+```twig
+{% set background_image = node.field_hero_image.entity.field_hero_image_media_bundle.entity.filename.value %}
+
+<section class="hero" style="background-image:url('/sites/default/files/styles/hero_wide/public/hero-images/{{ background_image }}');">
+```
+
 ### HTML validation bug in `links.html.twig`
 
 ![Menu li hreflang validation error](screens/li-hreflang-attribute.png)
